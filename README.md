@@ -1,1 +1,1 @@
-## This is my journey into the beautiful world of Neovim & Lua
+# My journey into the world of Neovim & Lua

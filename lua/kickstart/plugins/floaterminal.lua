@@ -32,8 +32,13 @@ return {
       if not vim.api.nvim_win_is_valid(state.floating.win) then
         state.floating = create_floating_window()
         if vim.bo[state.floating.buf].buftype ~= 'terminal' then
-          vim.cmd 'terminal'  -- Open terminal
+          vim.cmd 'terminal' -- Open terminal
         end
+        vim.defer_fn(function()
+          if vim.b.terminal_job_id then
+            vim.fn.chansend(vim.b.terminal_job_id, 'fish\n')
+          end
+        end, 50)
         vim.cmd 'startinsert' -- Automatically enter insert mode
       else
         vim.api.nvim_win_hide(state.floating.win)

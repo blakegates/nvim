@@ -62,11 +62,20 @@ return {
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          -- NOTE: Remember that Lua is a real programming language, and as such it is possible
-          -- to define small helper and utility functions so you don't have to repeat yourself.
-          --
-          -- In this case, we create a function that lets us more easily define mappings specific
-          -- for LSP related items. It sets the mode, buffer and description for us each time.
+          -- Attach additional functionality when the LSP client attaches to a buffer
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+          -- Enable formatting on save for buffers where the LSP supports it
+          if client and client.supports_method 'textDocument/formatting' then
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              group = vim.api.nvim_create_augroup('LspFormatting', { clear = true }),
+              buffer = event.buf,
+              callback = function()
+                vim.lsp.buf.format { async = false }
+              end,
+            })
+          end
+
           local map = function(keys, func, desc, mode)
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })

@@ -1,4 +1,4 @@
--- [[ Basic Keymaps ]]
+-- [[ Keymaps Settings ]]
 --  See `:help vim.keymap.set()`
 --  See `:help lua-guide-autocommands`
 --  See `:help wincmd` for a list of all window commands

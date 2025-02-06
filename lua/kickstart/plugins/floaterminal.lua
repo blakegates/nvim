@@ -36,7 +36,7 @@ return {
         end
         vim.defer_fn(function()
           if vim.b.terminal_job_id then
-            vim.fn.chansend(vim.b.terminal_job_id, 'fish\n')
+            vim.fn.chansend(vim.b.terminal_job_id, 'fish\n') -- Send fish command - also loads fastfetch
           end
         end, 50)
         vim.cmd 'startinsert' -- Automatically enter insert mode
